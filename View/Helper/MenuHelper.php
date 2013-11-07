@@ -39,8 +39,14 @@ class MenuHelper extends AppHelper {
         $linkRoutes = Router::parse($linkRoutes);
         
         // if the current controller matches the one the link routes to, it is active
-        if ($this->params['controller'] == $linkRoutes['controller']) {
-            $attributes = implode(' ', Hash::merge($attributes, $activeClass));
+        if ($this->params['controller'] == $linkRoutes['controller'] && $this->params['action'] == $linkRoutes['action']) {
+            if (isset($attributes['class'])) {
+                $classes = explode(' ', $attributes['class']);
+                $classes[] = $activeClass;
+                $attributes['class'] = $classes;
+            } else {
+                $attributes['class'] = $activeClass;
+            }
         }
 
         return $this->Html->tag('li', $link, $attributes);
