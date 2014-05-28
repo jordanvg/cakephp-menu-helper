@@ -8,7 +8,7 @@ Based off of [MenuHelper by Malte Wassermann](http://www.maltewassermann.com/blo
 ## Features
 * wraps all passed links with list ```<li>``` elements
 * detects if the passed link routes to the current controller, then applies a specified style to the list element
-
+* new: support third param to set extact link mathching or not. It's usefull for catching all controller link ( add, view, edit, etc.. ) 
 ## Installation
 
 ### CakePHP >= 2.2
