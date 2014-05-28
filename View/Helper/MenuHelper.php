@@ -18,6 +18,10 @@ App::uses('AppHelper', 'View/Helper');
 class MenuHelper extends AppHelper {
     public $helpers = array('Html');
 
+
+
+
+
     /**
      * Creates a formatted list element
      *
@@ -27,9 +31,10 @@ class MenuHelper extends AppHelper {
      *
      * @param string $link Link in the form <a href="" [...]>.
      * @param array $attributes Options to use for the list element.
+     * @param boolean $extactLink match all the link for a controller or specific link. Ej. customercontroller with or without edit, admin, index...
      * @return string The passed link with list tags containing the applicable attributes.
      */
-    function item($link, $attributes = array()) {
+    function item($link, $attributes = array(), $extactLink = false ) {
         // class to apply to the list element if the link routes to the current controller
         $activeClass = 'active';
 
@@ -39,14 +44,22 @@ class MenuHelper extends AppHelper {
         $linkRoutes = Router::parse($linkRoutes);
         
         // if the current controller matches the one the link routes to, it is active
-        if ($this->params['controller'] == $linkRoutes['controller'] && $this->params['action'] == $linkRoutes['action']) {
-            if (isset($attributes['class'])) {
-                $classes = explode(' ', $attributes['class']);
-                $classes[] = $activeClass;
-                $attributes['class'] = $classes;
-            } else {
-                $attributes['class'] = $activeClass;
-            }
+        if ($this->params['controller'] == $linkRoutes['controller'] ) { 
+        
+        	$match = true ; 
+        	if ( $extactLink ) {
+        		$match = $this->params['action'] == $linkRoutes['action'] ;
+        	}
+        
+        	if ( $match ) {       
+	            $attributes['class'] = $activeClass;
+	            
+		        if (isset($attributes['class'])) {
+		            $classes = explode(' ', $attributes['class']);
+		            $classes[] = $activeClass;
+		            $attributes['class'] = $classes;
+				}		       
+		    }
         }
 
         return $this->Html->tag('li', $link, $attributes);
